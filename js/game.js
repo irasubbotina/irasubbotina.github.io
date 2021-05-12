@@ -2,12 +2,11 @@ const right = 1, left = 2, up = 3, down = 4
 
 function findZero(state)
 {
-    for(let i = 0; i < 3; i++)
+    for(let l = 0; l < 3; l++)
     {
-        for(let j = 0; j < 3; j++)
-        {
-         if(state[i][j] === 0) return [i, j]
-        }
+        for(let k = 0; k < 3; k++)
+            if(state[l][k] === 0)
+                return [l, k]
     }
 }
 
@@ -15,44 +14,26 @@ export function actions(state)
 {
     const [i, j] = findZero(state)
     if(i === 0 && j === 0)
-    {
         return [up, left]
-    }
     else if(i === 0 && j === 2)
-    {
         return [up, right]
-    }
     else if(i === 2 && j === 0)
-    {
         return [down, left]
-    }
     else if(i === 2 && j === 2)
-    {
         return [down, right]
-    }
     else if(i === 0)
-    {
         return [up, left, right]
-    }
     else if(i === 2)
-    {
         return [down, left, right]
-    }
     else if(j === 0)
-    {
         return [up, down, left]
-    }
     else if(j === 2)
-    {
         return [up, down, right]
-    }
     else
-    {
         return [up, down, left, right]
-    }
 }
 
-function successor(state, action)
+export function successor(state, action)
 {
     const newS =[state[0].slice(), state[1].slice(), state[2].slice()]
     const [i, j] = findZero(state)
@@ -93,4 +74,27 @@ export function move(state, i, j)
         return successor(state, down)
     else
         return state
+}
+
+
+export function goalTest(state)
+{
+    const goalState = [
+        [1, 2,3],
+        [4, 5, 6],
+        [7, 8, 0]]
+    return is_equal(goalState, state)
+}
+
+function is_equal(s1, s2)
+{
+    for(let i = 0; i < 3; i++)
+    {
+        for(let j = 0; j < 3; j++)
+        {
+            if(s1[i][j] !== s2[i][j])
+                return false
+        }
+    }
+    return true
 }
